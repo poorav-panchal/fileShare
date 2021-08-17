@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+            rel="stylesheet" 
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+            crossorigin="anonymous">
+        <!-- Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Prompt:ital,wght@1,500&display=swap" 
+            rel="stylesheet">
+
+        <link rel="stylesheet" href="/stylesheets/stud_home.css">
+
+        <title>Hello, world!</title>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-dark" style="background-color: #3f3d56;">
+                <div>
+                    <span class="navbar-brand mb-0 h1 nav-text">
+                        <a href="/">fileShare</a>
+                    </span>
+                </div>
+                <div class="buttons">
+                    <form class="d-flex search" action="/allnotes" method="GET">
+                        <input class="form-control me-2" type="search" placeholder="Search by Name" aria-label="Search" name="search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                    <span class="settings-btn">
+                        <a href="/stud/<%= student._id %>">
+                            <i class="bi bi-gear"></i>
+                        </a>
+                    </span>
+                </div>
+            </nav>
+        </header>
+
+        <div>
+            <% if(messages.success){ %>
+                <div class="alert alert-success" role="alert">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+        
+            <% if(messages.error){ %>
+                <div class="alert alert-danger" role="alert">
+                    <%= messages.error %>
+                </div>
+            <% } %>
+        </div>
+
+        
+        <section class="mt-4 container search-results">
+            <section class="intro">
+                <h3>Welcome <%= student.name %>!</h3>
+            </section>
+            
+                <% if(professors == false){ %>
+                    <h3><%=  %></h3>
+                <% } else { %>
+                    <h3>Search results: </h3>
+                    <div class="row search-div" style="display: flex; flex-wrap:wrap">
+                    <% professors.forEach(function(professor){ %>
+                        <div class="card mb-3 col-xl-5 col-lg-6">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="/images/default.jpg" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><%= professor.name %></h5>
+                                        <p class="card-text"><span>Email: </span><%= professor.email %></p>
+                                        <p class="card-text"><span>University: </span><%= professor.university %></p>
+                                        <div class="subscribe">
+                                            <p class="card-text"><small class="text-muted"><%= professor.studentsNumber %> Students</small></p>
+                                            <% if( student.subscribedTo.indexOf(professor._id) !== -1 ){ %>
+                                                <form action="/stud/<%= student._id %>/subscribe/<%= professor._id %>" method="post">
+                                                    <button type="submit" class="btn btn-primary" disabled>Subscribe</button>
+                                                </form>
+                                            <% } else { %>
+                                                <form action="/stud/<%= student._id %>/subscribe/<%= professor._id %>" method="post">
+                                                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                                                </form>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </section>
+
+        <article class="container">
+            <section class="row files" style="flex-wrap: wrap;">
+                <% if(files){ %>
+                    <% files.forEach( function( file ){ %>
+                        <% let index = file.filename.indexOf("_") %>
+                        <% let name = file.filename.slice(index + 1) %>
+                        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+                            <div class="card mb-3" >
+                                <% if(file.contentType === "image/jpeg" || file.contentType === "image/png"){ %>
+                                    <img src="/images/image.jpg" class="card-img-top" alt="...">
+                                <% } %>
+                                <% if(file.contentType === "application/pdf"){ %>
+                                    <img src="/images/pdf.png" class="card-img-top" alt="...">
+                                <% } %>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= name %></h5>
+                                    <p class="card-text"><%= file.uploadDate %></p>
+                                    <a href="/notes/<%= file.filename %>" class="btn open">Open</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>                
+            </section>
+        </article>
+   
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+                crossorigin="anonymous">
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+        crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Prompt:ital,wght@1,500&display=swap" 
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/stylesheets/register.css">
+
+    <title>fileShare</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark" style="background-color: #3f3d56;">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 nav-text">
+                <a href="/">fileShare</a>
+            </span>
+        </div>
+    </nav>
+
+    <% if(messages.success){ %>
+        <div class="alert alert-success" role="alert">
+            <%= messages.success %>
+        </div>
+    <% } %>
+
+    <% if(messages.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %>
+        </div>
+    <% } %>
+
+    <article class="container">
+        <section class="head">
+            <h2>Register as a Student</h2>
+        </section>
+        <section class="row main">
+            <div class="img-container">
+                <img src="/images/student.png" alt="Professor Register">
+            </div>
+            <form class="input-container pt-5" method="POST" action="/stud/register">
+                <div class="row g-2 mb-3">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="stud_name" placeholder="Full Name" name="name" required>
+                            <label for="stud_name">Full Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="stud_email" placeholder="Email" name="email" required>
+                            <label for="stud_email">Email</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2 mb-3">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="stud_password" placeholder="Password" name="password" required>
+                            <label for="stud_password">Password</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="stud_course" placeholder="Course" name="course" required>
+                            <label for="stud_course">Course</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2 mb-3">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="stud_faculty" placeholder="Faculty" name="faculty" required>
+                            <label for="stud_faculty">Faculty</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="stud_university" placeholder="University" name="university" required>
+                            <label for="stud_university">University</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-2 mb-3">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="stud_college_start" placeholder="College Start Year" name="collegeStart" required>
+                            <label for="stud_college_start">College Start Year</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="stud_college_end" placeholder="College End Year" name="collegeEnd" required>
+                            <label for="stud_college_end">College End Year</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn submit">Register</button>
+            </form>
+            
+        </section>
+    </article>
+
+    
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+        crossorigin="anonymous">
+    </script>
+
+  </body>
+</html>

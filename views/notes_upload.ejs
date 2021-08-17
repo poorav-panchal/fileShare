@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="/stylesheets/notes_upload.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Prompt:ital,wght@1,500&display=swap" 
+        rel="stylesheet">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark" style="background-color: #3f3d56;">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 nav-text">
+                <a href="/">fileShare</a>
+            </span>
+        </div>
+    </nav>
+
+    <% if(messages.error){ %>
+        <%= messages.error %>
+    <% } %>
+
+    <article class="container mt-4">
+        <section class="row" style="flex-wrap: wrap;">
+            <section class="img-container col-xl-6">
+                <img src="/images/notes.png" alt="upload notes">
+            </section>
+            <section class="col-xl-6 form-container">
+                <form action="/notes" method="POST">
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload single file</label>
+                        <input class="form-control" type="file" id="formFile">
+                    </div>
+                </form>
+            </section>
+        </section>
+        
+    </article>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  </body>
+</html>

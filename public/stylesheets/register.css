@@ -1,0 +1,57 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-text{
+    padding-left: 8%;
+    font-family: 'Prompt', sans-serif;
+}
+.nav-text a{
+    text-decoration: none;
+    color: #f8f8f8;
+    font-family: 'Prompt', sans-serif;
+}
+.nav-text a:hover{
+    color: #f8f8f8;
+    opacity: 0.8;
+}
+
+.head{
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    position: relative;
+    z-index: 20;
+}
+.head h2{
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: #3f3d56;
+}
+
+.img-container{
+    width: 50%;
+}
+.img-container img{
+    width: 100%;
+    z-index: 10;
+    transition: all 0.5s ease;
+}
+.img-container img:hover{
+    transform: scale(1.04);
+}
+
+.input-container{
+    width: 50%;
+}
+
+.submit{
+    background-color: #00bfa6;
+    color: #f8f8f8;
+    font-size: 1.3rem;
+    width: 100%;
+    height: 3rem;
+}

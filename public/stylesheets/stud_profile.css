@@ -1,0 +1,97 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar{
+    flex-wrap: nowrap;
+}
+.nav-text{
+    padding-left: 8%;
+}
+.nav-text a{
+    font-family: 'Prompt', sans-serif;
+    text-decoration: none;
+    color: #f8f8f8;
+}
+.logout{
+    margin-right: 2rem;
+    background-color: #00bfa6;
+}
+.logout:hover{
+    background-color: #00bfa6;
+    color: #3f3d56;
+}
+
+article{
+    font-size: 1.2rem;
+}
+.row{
+    flex-wrap: nowrap;
+}
+.info{
+    padding-left: 3rem;
+}
+.info h3{
+    padding-left: 3rem;
+}
+section h3{
+    margin-top: 2rem;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    color: #3f3d56;
+}
+
+.image{
+    margin-bottom: 2rem;
+    padding-right: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-pic{
+    border-radius: 50%;
+    width: 15vw;
+    margin-right: 5rem;
+}
+
+.field{
+    padding: 0.2rem 1rem 0.2rem 2rem;
+    display: flex;
+}
+.field-name{
+    width: 30%;
+    padding: 0.1rem 0.5rem;
+    margin: 0.3rem 0;
+    color: #00bfa6;
+}
+.field-value{
+    width: 70%;
+    padding-left: 0.5rem;
+    margin: 0.3rem 0;
+}
+
+.prof-list{
+    margin-top: 2rem;
+    width: 60%;
+}
+
+.list-group-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.list-group-item span{
+    padding: 0.2rem 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+.list-group-item span:hover{
+    background-color: rgba(0, 191, 166, 0.2);
+}
+.list-group-item span a{
+    text-decoration: none;
+    color: #3f3d56;
+}

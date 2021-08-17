@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+        crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Prompt:ital,wght@1,500&display=swap" 
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="./stylesheets/home.css">
+
+    <title>fileShare</title>
+  </head>
+  <body>
+      <!-- #00bfa6 -->
+    <nav class="navbar navbar-dark" style="background-color: #3f3d56;">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 nav-text">
+                <a href="/">fileShare</a>
+            </span>
+        </div>
+    </nav>
+
+    <% if(messages.success){ %>
+        <div class="alert alert-success" role="alert">
+            <%= messages.success %>
+        </div>
+    <% } %>
+
+    <% if(messages.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %>
+        </div>
+    <% } %>
+
+    <article class="row">
+        <section class="col-md-6">
+            <img src="./images/teacher.png" alt="teacher" class="image">
+        </section>
+        <section class="col-md-6 button-section">
+            <div class="dropdown">
+                <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Professor
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <div class="list-container">
+                        <li><a class="dropdown-item" href="/prof/register">Register</a></li>
+                        <li><a class="dropdown-item" href="/prof/login">Login</a></li>
+                    </div>
+                </ul>
+            </div>
+            <div class="dropup">
+                <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Student
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <div class="list-container">
+                        <li><a class="dropdown-item" href="/stud/register">Register</a></li>
+                        <li><a class="dropdown-item" href="/stud/login">Login</a></li>
+                    </div>
+                </ul>
+            </div>
+        </section>
+    </article>
+    
+
+   
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+            crossorigin="anonymous">
+    </script>
+
+    
+  </body>
+</html>

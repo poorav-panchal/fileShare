@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="/stylesheets/prof_profile.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Prompt:ital,wght@1,500&display=swap" 
+        rel="stylesheet">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark" style="background-color: #3f3d56;">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 nav-text">
+                <a href="/">fileShare</a>
+            </span>
+        </div>
+        <% if(reqUser && reqUser._id.equals(professor._id)){ %>
+        <a class="btn btn-primary logout" href="/logout">Logout</a>
+        <button class="btn btn-primary upload-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            Upload <i class="bi bi-arrow-bar-up"></i>
+        </button>
+        <% } %>
+    </nav>
+
+    <% if(messages.success){ %>
+        <div class="alert alert-success" role="alert">
+            <%= messages.success %>
+        </div>
+    <% } %>
+
+    <% if(messages.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %>
+        </div>
+    <% } %>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">Upload New Notes</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <img src="/images/notes.png" alt="upload notes" class="notes-img">
+            <form action="/notes" method="POST" enctype="multipart/form-data" class="container">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Choose file to upload</label>
+                    <input class="form-control" type="file" name="file" id="formFile">
+                </div>
+                <input type="text" name="prof_id" value="<%= professor._id %>" style="display: none;">
+                <button class="btn btn-primary" type="submit">Upload <i class="bi bi-check2"></i></button>
+            </form>
+        </div>
+      </div>
+      
+
+    <article class="container mt-4">
+        <section class="row" style="display: flex; flex-wrap:wrap">
+            <section class="pt-3 col-xl-4 col-lg-4 col-md-5 col-sm-6 info">
+                <h3>Professor Information</h3>
+                <div class="image">
+                    <img src="/images/default.jpg" alt="profile image" class="profile-pic">
+                </div>
+                <div class="field">
+                    <span class="field-name">Name:</span>
+                    <span class="field-value"><%= professor.name %></span>
+                </div>
+                <div class="field">
+                    <span class="field-name">Phone:</span>
+                    <span class="field-value">+91 <%= professor.phone %></span>
+                </div>
+                <div class="field">
+                    <span class="field-name">Email:</span>
+                    <span class="field-value"><%= professor.email %></span>
+                </div>
+                <div class="field">
+                    <span class="field-name">University:</span>
+                    <span class="field-value"><%= professor.university %></span>
+                </div>
+                <div class="field">
+                    <span class="field-name">Faculty:</span>
+                    <span class="field-value"><%= professor.faculty %></span>
+                </div>
+                <div class="field">
+                    <span class="field-name">Subjects:</span>
+                    <span class="field-value"><%= professor.subjects %></span>
+                </div>
+                <div class="field">
+                    <span class="field-name">Degrees:</span>
+                    <span class="field-value"><%= professor.degrees %></span>
+                </div>
+            </section>
+            <section class="pt-3 col-xl-8 col-lg-8 col-md-7 col-sm-6 file-section">
+                <div class="files-header">
+                    <h3>Files Uploaded</h3>
+                    <span><%= files.length %> notes uploaded</span>
+                </div>
+                <section class="files">
+                    <div class="row" style="display: flex; flex-wrap:wrap">
+
+                        <% files.forEach( function( file ){ %>
+                            <% let index = file.filename.indexOf("_") %>
+                            <% let name = file.filename.slice(index + 1) %>
+                            
+                        <div class="col-xl-4 col-lg-6">
+                            <div class="card mb-3" >
+                                <% if(file.contentType === "image/jpeg" || file.contentType === "image/png"){ %>
+                                    <img src="/images/image.jpg" class="card-img-top" alt="...">
+                                <% } %>
+                                <% if(file.contentType === "application/pdf"){ %>
+                                    <img src="/images/pdf.png" class="card-img-top" alt="...">
+                                <% } %>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= name %></h5>
+                                    <p><%= file.uploadDate %></p>
+                                    <div class="buttons">
+                                        <a href="/notes/<%= file.filename %>" class="btn open">Open</a>
+                                        <% if(reqUser && reqUser._id.equals(professor._id)){ %>
+                                        <form action="/prof/<%= professor._id %>/notes/<%= file._id %>?_method=DELETE" method="POST">
+                                            <input type="text" name="filename" value="<%= file.filename %>" style="display: none;">
+                                            <button class="btn delete"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </article>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  </body>
+</html>

@@ -1,0 +1,27 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-text{
+    padding-left: 8%;
+    font-family: 'Prompt', sans-serif;
+}
+.nav-text a{
+    text-decoration: none;
+    color: #f8f8f8;
+    font-family: 'Prompt', sans-serif;
+}
+
+.img-container{
+    width: 50%;
+}
+.img-container img{
+    width: 100%;
+}
+
+.form-container{
+    border: 1px solid slateblue;
+}

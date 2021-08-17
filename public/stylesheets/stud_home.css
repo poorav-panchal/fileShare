@@ -1,0 +1,95 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-text{
+    margin-left: 5rem;
+}
+.nav-text a{
+    text-decoration: none;
+    color: #f8f8f8;
+    font-family: 'Prompt', sans-serif;
+}
+.buttons{
+    display: flex;
+}
+.settings-btn{
+    margin-right: 2rem;
+    display: flex;
+    align-items: center;
+}
+.settings-btn a i{
+    font-size: 1.4rem;
+    color: #00bfa6;
+}
+.settings-btn a:hover{
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+.search{
+    margin-right: 2rem;
+}
+.btn-outline-success{
+    color: #00bfa6;
+    border-color: #00bfa6;
+}
+.btn-outline-success:hover{
+    background-color: #00bfa6;
+    color: #f8f8f8;
+}
+
+img{
+    user-select: none;
+}
+
+.search-results h3{
+    color: #3f3d56;
+    font-weight: bold;
+}
+.search-div .card{
+    margin-right: 1.5rem;
+}
+.img-fluid{
+    height: 100%;
+}
+.btn-primary{
+    border: none;
+}
+.btn-primary:hover{
+    background-color: #00bfa6;
+    color: #3f3d56;
+}
+.btn-primary:disabled{
+    background-color: rgba(0, 191, 166, 0.7);
+}
+.subscribe{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.row>*{
+    padding-left: 0;
+}
+
+.intro{
+    margin-top: 2rem;
+    color: #3f3d56;
+}
+.intro h3{
+    font-weight: bold;
+}
+
+.files{
+    margin-top: 2rem;
+}
+.card-title{
+    font-weight: bold;
+    color: #3f3d56;
+}
+.btn{
+    background-color: #00bfa6;
+    color: #f8f8f8;
+}
