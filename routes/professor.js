@@ -10,6 +10,8 @@ const mongoose = require('mongoose');
 const methodOverride = require("method-override");
 
 const Professor = require('../models/professor');
+const Student = require('../models/student');
+const Chat = require('../models/chat');
 
 const middleware = require('../middleware/index');
 
@@ -56,17 +58,29 @@ router.post('/prof/register', async (req, res) => {
         degrees: degrees
     });
 
-    newProf.save((err, savedProf) => {
-        if(!err && savedProf){
-            req.flash("success", "Registered! Please login to continue");
-            res.redirect('/prof/login');
+    // Check if a Student exists with the same email
+    Student.find({email: email}, function(e, found){
+        if(e){
+            console.log(e);
+            res.redirect('/prof/register');
+        } else if(found.length > 0){
+            req.flash("error", "User with this email already exists");
+            console.log(found);
+            res.redirect('/prof/register');
         } else {
-            console.error("Error saving Professor");
-            console.error(err);
-            // res.render("register.ejs");
-            res.send("error saving professor");
+            newProf.save((err, savedProf) => {
+                if(!err && savedProf){
+                    req.flash("success", "Registered! Please login to continue");
+                    res.redirect('/prof/login');
+                } else {
+                    console.error("Error saving Professor");
+                    console.error(err);
+                    // res.render("register.ejs");
+                    res.send("error saving professor");
+                }
+            })
         }
-    })    
+    })     
 })
 
 // Login as a Professor
@@ -94,7 +108,6 @@ router.get('/logout', (req, res) => {
 // Get professor profile
 router.get('/prof/:id', middleware.isProfLoggedIn, function(req, res){
     console.log(`authenticated: ${req.isAuthenticated()}`);
-    // console.log(req.user);
     Professor.findById(req.params.id).exec(async function(err, professor){
         if(err){
             req.flash("error", "An error occurred!");
@@ -112,13 +125,44 @@ router.get('/prof/:id', middleware.isProfLoggedIn, function(req, res){
                     }
                 }) 
             })
+
+            // Get information of all Students who have subscribed to this Professor
+            let subscribedStudents = [];
+            // This array will contain all students who already have a chatroom with the professor
+            let roomExists = [];
+            professor.studentsId.map(x => {
+                Student.findById(x, function(e, stud){
+                    if(e){
+                        console.log(e);
+                        res.redirect('back');
+                    } else {
+                        subscribedStudents.push(stud);
+                        Chat.find({profId: professor._id, studId: stud._id}, function(error, room){
+                            if(error){
+                                console.log(error);
+                                res.redirect('back');
+                            } else {
+                                roomExists.push(stud);
+                            }
+                        })
+                    }
+                })
+            })
+
+            // This array will contain students who have do not have a chatroom with the professor
+            let noRoom = subscribedStudents.filter( function( el ) {
+                return !roomExists.includes( el );
+            } );
+
             setTimeout(function(){
-                res.render('prof_profile', {professor: professor, files:allFiles, reqUser: req.user});
+                res.render('prof_profile', {professor: professor, files:allFiles, reqUser: req.user, subbedStudents: subscribedStudents , noRoomStudents: noRoom, roomStudents: roomExists});
             }, 1500);
         }
     })
 });
 
+
+// Delete notes
 router.delete('/prof/:prof_id/notes/:id', (req, res) => {
     gfs.delete(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
         if(err){

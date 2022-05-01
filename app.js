@@ -10,16 +10,21 @@ const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const grid = require('gridfs-stream');
+const shortId = require('shortid');
+const {ExpressPeerServer} = require('peer');
+
 
 const upload = require('./gridfs/index');
 
 const Professor = require('./models/professor');
 const Student = require('./models/student');
+const Chat = require('./models/chat');
 
 const middleware = require('./middleware/index');
 // ROUTES IMPORT
 const professorRoutes = require('./routes/professor');
 const studentRoutes = require('./routes/student');
+// const chatRoutes = require('./routes/chat');
 
 // DATABASE CONNECTION
 const mongoUri = process.env.MONGO_URI;
@@ -114,8 +119,8 @@ passport.use('student-local', new localStrategy({
 },
   function(email, password, done){
       Student.findOne({email: email}, function(err, stud){
-          // console.log('student authentication');
-          // console.log(email);
+          console.log('student authentication');
+          console.log(email);
           if(err){
               console.log(err);
               return done(err);
@@ -209,6 +214,127 @@ app.get('/notes/:filename', (req, res) => {
 
 app.use('/', professorRoutes);
 app.use('/', studentRoutes);
+// app.use('/', chatRoutes);
+
+//===================================================================
+const http = require('http');
+
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server);
+
+// const peerServer = ExpressPeerServer(server, {
+//   debug: true,
+//   path: '/call'
+// });
+
+// app.use('/peerjs', peerServer);
+
+
+
+// const peerExpress = require('express');
+// const peerApp = peerExpress();
+// const peerServer = require('http').createServer(peerApp);
+// const options = { debug: true };
+// const peerPort = 5001;
+// peerApp.use('/peerjs', ExpressPeerServer(peerServer, options));
+// peerServer.listen(peerPort);
+
+// const peer = ExpressPeerServer(server, {debug: true});
+
+// app.use('/peerjs', peer);
+
+// app.get('/chat/new/:studId/:profId', (req, res) => {
+//     let {stud_Id, prof_Id} = req.params;
+
+//     Chat.find({profId: prof_Id, stud_Id: stud_Id}, function(e, found){
+//       if(e){
+//         console.log(e);
+//         res.redirect('back');
+//       } else if (found.length = 0){
+//         console.log('length check');
+//         let room_Id = shortId.generate();
+//         let newChat = new Chat({
+//             roomId: room_Id,
+//             profId: prof_Id,
+//             studId: stud_Id
+//         });
+//         newChat.save((error, saved) => {
+//           if(error){
+//             console.log(error);
+//             res.redirect('back');
+//           } else {
+//             console.log(saved);
+
+//             res.redirect('/chat/' + saved.roomId);
+//           }
+//         })
+//       } else {
+//         console.log('after length check');
+//         console.log(found);
+//         res.redirect('/chat/' + found.roomId);
+//       }
+//     })
+// })
+
+// CHAT ROUTES
+app.get('/chat', function(req, res){
+  let room_Id = shortId.generate();
+  res.redirect('/chat/' + room_Id);
+});
+
+app.get('/chat/:roomId', function(req, res){
+  res.render('chat_page');
+});
+
+// VIDEO CALL ROUTES
+app.get('/call', function(req, res){
+  // let roomId = shortId.generate();
+  //http://localhost:5000/call/euHc9pBYM
+  res.redirect(`/call/euHc9pBYM`);
+});
+
+app.get('/call/euHc9pBYM', function(req, res){
+  // let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  res.render('room', {roomId: 'euHc9pBYM'});
+})
+
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+    });
+
+    socket.on('message', (msg) => {
+        io.emit('message', msg)
+    });
+
+    // socket.on('join-room', (roomId, userId) => {
+    //   socket.join(roomId);
+    //   socket.to(roomId).broadcast.emit('user-connected', userId);
+    // })
+
+    socket.on('join-room', (room, id) => {
+      socket.join(room);
+      socket.broadcast.to(room).emit("userJoined", id);
+      socket.on('disconnect', () => {
+        socket.broadcast.to(room).emit("userDisconnected", id);
+        console.log('User disconnected');
+      });
+    })
+});
+
+const application = server.listen(5000, () => {
+  console.log('listening on *:5000');
+})
+
+const peerServer = ExpressPeerServer(application, {
+  debug: true
+});
+
+app.use('/call', peerServer);
+//===================================================================
 
 
 //tell express to listen for requests

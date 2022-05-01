@@ -26,6 +26,9 @@
         </div>
         <% if(reqUser && reqUser._id.equals(professor._id)){ %>
         <a class="btn btn-primary logout" href="/logout">Logout</a>
+        <button class="btn btn-primary chat-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightConversation" aria-controls="offcanvasRight">
+            Conversations</i>
+        </button>
         <button class="btn btn-primary upload-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             Upload <i class="bi bi-arrow-bar-up"></i>
         </button>
@@ -46,8 +49,8 @@
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
-          <h5 id="offcanvasRightLabel">Upload New Notes</h5>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 id="offcanvasRightLabel">Upload New Notes</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <img src="/images/notes.png" alt="upload notes" class="notes-img">
@@ -60,7 +63,20 @@
                 <button class="btn btn-primary" type="submit">Upload <i class="bi bi-check2"></i></button>
             </form>
         </div>
-      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRightConversation" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Conversations</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <img src="/images/chat.png" alt="upload notes" class="chat-img">
+            <% subbedStudents.map(x => { %>
+                <a href="/chat" class="chat"><%= x.name %></a>
+            <% }) %>
+        </div>
+    </div>
       
 
     <article class="container mt-4">
@@ -123,7 +139,7 @@
                                     <h5 class="card-title"><%= name %></h5>
                                     <p><%= file.uploadDate %></p>
                                     <div class="buttons">
-                                        <a href="/notes/<%= file.filename %>" class="btn open">Open</a>
+                                        <a href="/notes/<%= file.filename %>" target="_blank" class="btn open">Open</a>
                                         <% if(reqUser && reqUser._id.equals(professor._id)){ %>
                                         <form action="/prof/<%= professor._id %>/notes/<%= file._id %>?_method=DELETE" method="POST">
                                             <input type="text" name="filename" value="<%= file.filename %>" style="display: none;">

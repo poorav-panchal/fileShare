@@ -1,0 +1,80 @@
+.nav-text{
+    margin-left: 5rem;
+}
+
+.nav-text a{
+    text-decoration: none;
+    color: #f8f8f8;
+    font-family: 'Prompt', sans-serif;
+}
+
+.navbar>div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.video{
+    margin-right: 4rem;
+    background-color: #00bfa6;
+    border-radius: 3px;
+}
+.video:hover{
+    background-color: rgba(0, 191, 166, 0.7);
+}
+
+.bi-camera-video{
+    font-size: 1.4rem;
+    color: #f8f8f8;
+    padding: 0.1rem 0.8rem;
+}
+
+#form{
+    background: rgba(0, 0, 0, 0.15); 
+    padding: 0.25rem; 
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    right: 0; 
+    display: flex; 
+    height: 3rem; 
+    box-sizing: border-box; 
+    backdrop-filter: blur(10px);
+}
+
+#input{
+    border: none; 
+    padding: 0 1rem; 
+    flex-grow: 1; 
+    border-radius: 2rem; 
+    margin: 0.25rem;
+}
+
+#input:focus{
+    outline: none;
+}
+
+#form>button{
+    background: #333; 
+    border: none; 
+    padding: 0 1rem; 
+    margin: 0.25rem; 
+    border-radius: 3px; 
+    outline: none; 
+    color: #fff;
+}
+
+#messages{
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0;
+}
+
+#messages>li{
+    padding: 0.5rem 1rem;
+}
+
+#messages>li:nth-child(odd){
+    background-color: #efefef;
+}

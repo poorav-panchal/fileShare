@@ -18,7 +18,7 @@
 
         <link rel="stylesheet" href="/stylesheets/stud_home.css">
 
-        <title>Hello, world!</title>
+        <title>FileShare</title>
     </head>
     <body>
         <header>
@@ -60,6 +60,9 @@
         <section class="mt-4 container search-results">
             <section class="intro">
                 <h3>Welcome <%= student.name %>!</h3>
+                <button class="btn btn-primary chat-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    Conversations</i>
+                </button>
             </section>
             
                 <% if(professors == false){ %>
@@ -99,13 +102,30 @@
             </div>
         </section>
 
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+              <h5 id="offcanvasRightLabel">Conversations</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <img src="/images/chat.png" alt="upload notes" class="chat-img">
+                <% prof.map((x) => { %>
+                    <a href="/chat" class="chat"><%= x.name %></a>
+                <% }) %>
+                
+                <!-- <a href="#" class="chat">Professor Name</a>
+                <a href="#" class="chat">Professor Name</a>
+                <a href="#" class="chat">Professor Name</a> -->
+            </div>
+          </div>
+
         <article class="container">
             <section class="row files" style="flex-wrap: wrap;">
                 <% if(files){ %>
                     <% files.forEach( function( file ){ %>
                         <% let index = file.filename.indexOf("_") %>
                         <% let name = file.filename.slice(index + 1) %>
-                        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                             <div class="card mb-3" >
                                 <% if(file.contentType === "image/jpeg" || file.contentType === "image/png"){ %>
                                     <img src="/images/image.jpg" class="card-img-top" alt="...">
@@ -114,9 +134,10 @@
                                     <img src="/images/pdf.png" class="card-img-top" alt="...">
                                 <% } %>
                                 <div class="card-body">
+                                    
                                     <h5 class="card-title"><%= name %></h5>
                                     <p class="card-text"><%= file.uploadDate %></p>
-                                    <a href="/notes/<%= file.filename %>" class="btn open">Open</a>
+                                    <a href="/notes/<%= file.filename %>" target="_blank" class="btn open">Open</a>
                                 </div>
                             </div>
                         </div>

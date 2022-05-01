@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 
 const Student = require('../models/student');
 const Professor = require('../models/professor');
+const Chat = require('../models/chat');
 
 const Middleware = require('../middleware/index');
 
@@ -54,15 +55,27 @@ router.post('/stud/register', async (req, res) => {
         collegeEnd: collegeEnd
     });
 
-    newStudent.save((err, savedStudent) => {
-        if(!err && savedStudent){
-            req.flash("success", "Registered! Please login to continue");
-            res.redirect('/stud/login');
-        } else {
-            req.flash("error", "Error registering your account");
+    // Check if a Professor exists with the same email
+    Professor.find({email:email}, function(e, found){
+        if(e){
+            console.log(e);
             res.redirect('/stud/register');
+        } else if(found.length > 0){
+            req.flash("error", "User with this email already exists!!!");
+            console.log(found);
+            res.redirect('/stud/register');
+        } else {
+            newStudent.save((err, savedStudent) => {
+                if(!err && savedStudent){
+                    req.flash("success", "Registered! Please login to continue");
+                    res.redirect('/stud/login');
+                } else {
+                    req.flash("error", "Error registering your account");
+                    res.redirect('/stud/register');
+                }
+            });
         }
-    });
+    })
 })
 
 // Login as a Student
@@ -86,8 +99,11 @@ router.get('/allnotes', function(req, res){
     console.log(`authenticated: ${req.isAuthenticated()}`);
     // console.log(`currentUser: ${currentUser}`);
     // console.log(req.user);
+
+    //Check if the Student has searched for a professor
     if(req.query.search){
         Student.findById(req.user._id).exec(function(err, student){
+            console.log(`student: ${student}`);
             let files = false;
             if(err){
                 console.log(err);
@@ -109,6 +125,7 @@ router.get('/allnotes', function(req, res){
         })
         
     } else {
+        // Render the Student homepage
         Student.findById(req.user._id).exec(function(err, student){
             if(err){
                 res.send("No user found");
@@ -130,6 +147,7 @@ router.get('/allnotes', function(req, res){
                                     } else {
                                         // console.log(`files[0]: ${JSON.stringify(files[0])}`);
                                         allFiles.push(files[0]);
+                                        // console.log(`typeof: ${Object.getOwnPropertyNames(files[0].uploadDate)}`)
                                         // console.log(`in gfs fn: ${JSON.stringify(allFiles)}`);
                                         return allFiles;
                                     }
@@ -138,16 +156,50 @@ router.get('/allnotes', function(req, res){
                         }
                     })
                 })
-                console.log(`allFiles: ${allFiles}`);
+
+                //Get information of all Professors this Student has subscribed to
+                let prof = [];
+                // This array contains all the professors the student already has a chatroom with
+                // let roomExists = [];
+                student.subscribedTo.map(function(x){
+                    Professor.findById(x, function(e, found){
+                        if(e){
+                            console.log(e);
+                            res.redirect(back);
+                        } else {
+                            prof.push(found);
+                            console.log('found');
+                            console.log(prof);
+                            // Chat.find({studId: student._id, profId: x._id}, function(error, room){
+                            //     if(error){
+                            //         console.log(error);
+                            //         res.redirect('back');
+                            //     } else {
+                            //         console.log('in Chat.find');
+                            //         roomExists.push(found);
+                            //     }
+                            // })
+                        }
+                    })
+                })
+
+                console.log(prof);
+
+                // This array contains all the professors the student does not have a chatroom with
+                
+                // let noRoom = prof.filter( function( el ) {
+                //     return !roomExists.includes( el );
+                // } );
+                
                 setTimeout(function(){
-                    res.render('stud_home', {student: student, files: allFiles, professors: allProfessors});
+                    res.render('stud_home', {student: student, files: allFiles, professors: allProfessors, prof: prof});
                 }, 1500);
-                // res.render('stud_home', {student: student});
             }
         })
     }
 });
 
+// Student profile page
 router.get('/stud/:id', Middleware.isLoggedIn, function(req, res){
     console.log(`authenticated: ${req.isAuthenticated()}`);
     Student.findById(req.params.id).exec(function(err, student){
@@ -174,14 +226,14 @@ router.get('/stud/:id', Middleware.isLoggedIn, function(req, res){
     })
 })
 
-
+// Subscribe to a professor
 router.post('/stud/:stud_id/subscribe/:prof_id', function(req, res){
     Student.updateOne({_id: req.params.stud_id}, {$addToSet: {subscribedTo: req.params.prof_id}}, function(err, success){
         if(err){
             console.log(err);
             res.send('Error updating');
         } else {
-            Professor.updateOne({_id: req.params.prof_id}, {$inc: {studentsNumber: 1}}, function(e, s){
+            Professor.updateOne({_id: req.params.prof_id}, {$inc: {studentsNumber: 1}, $addToSet: {studentsId: req.params.stud_id}}, function(e, s){
                 if(e){
                     console.log(e);
                     res.send('Error updating');
