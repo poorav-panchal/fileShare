@@ -16,7 +16,7 @@ const Chat = require('../models/chat');
 const middleware = require('../middleware/index');
 
 // For gfs
-const mongoUri = process.env.MONGO_URI;
+const mongoUri = process.env.ATLAS_URI;
 const conn = mongoose.createConnection(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
