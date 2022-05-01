@@ -27,7 +27,7 @@ const studentRoutes = require('./routes/student');
 // const chatRoutes = require('./routes/chat');
 
 // DATABASE CONNECTION
-const mongoUri = process.env.MONGO_URI;
+const mongoUri = process.env.ATLAS_URI;
 const conn = mongoose.createConnection(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
