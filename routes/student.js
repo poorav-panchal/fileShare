@@ -210,6 +210,7 @@ router.get('/stud/:id', Middleware.isLoggedIn, function(req, res){
             req.flash("error", "An error occurred");
             res.redirect('back');
         } else {
+            console.log(student);
             let allProfessors = [];
             student.subscribedTo.forEach((profId) => {
                 // console.log(`profName: ${profName}`);
