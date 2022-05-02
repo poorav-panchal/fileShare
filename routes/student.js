@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const flash = require('express-flash');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const Grid = require('gridfs-stream');
 
 const Student = require('../models/student');
 const Professor = require('../models/professor');
@@ -24,10 +25,9 @@ const conn = mongoose.createConnection(mongoUri, {
 // Initialize gfs
 let gfs;
 conn.once('open', () => {
-    // Initialize stream
-    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-      bucketName: process.env.BUCKET_NAME
-    })
+    // Init Stream
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
 });
 
 
@@ -97,6 +97,9 @@ function escapeRegex(text){
 
 router.get('/allnotes', function(req, res){
     console.log(`authenticated: ${req.isAuthenticated()}`);
+    //Get information of all Professors this Student has subscribed to
+    let prof = [];
+
     // console.log(`currentUser: ${currentUser}`);
     // console.log(req.user);
 
@@ -118,7 +121,7 @@ router.get('/allnotes', function(req, res){
                             console.log("No file found");
                             return res.redirect('/allnotes');
                         }
-                        res.render('stud_home', {student: student, files: files, professors: allProfessors});
+                        res.render('stud_home', {student: student, files: files, professors: allProfessors, prof: prof});
                     }
                 })
             }
@@ -140,7 +143,7 @@ router.get('/allnotes', function(req, res){
                             // console.log(`professor[0].notes: ${professor[0].notes}`);
                             professor[0].notes.forEach(async (note) => {
                                 // console.log(`note: ${note}`);
-                                await gfs.find({filename: note}).toArray((err, files) => {
+                                await gfs.files.find({filename: note}).toArray((err, files) => {
                                     if(!files || files.length == 0){
                                         console.log(`No file found | err: ${err}`);
                                         return false
@@ -157,8 +160,7 @@ router.get('/allnotes', function(req, res){
                     })
                 })
 
-                //Get information of all Professors this Student has subscribed to
-                let prof = [];
+                
                 // This array contains all the professors the student already has a chatroom with
                 // let roomExists = [];
                 student.subscribedTo.map(function(x){

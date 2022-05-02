@@ -8,6 +8,7 @@ const flash = require('express-flash');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const methodOverride = require("method-override");
+const Grid = require('gridfs-stream');
 
 const Professor = require('../models/professor');
 const Student = require('../models/student');
@@ -24,12 +25,21 @@ const conn = mongoose.createConnection(mongoUri, {
 });
 // Initialize gfs
 let gfs;
+// conn.once('open', () => {
+//     // Initialize stream
+//     gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+//       bucketName: process.env.BUCKET_NAME
+//     })
+// });
+
+//NEW
 conn.once('open', () => {
-    // Initialize stream
-    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-      bucketName: process.env.BUCKET_NAME
-    })
+    // Init Stream
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
 });
+
+
 
 
 // Method Override
@@ -115,7 +125,7 @@ router.get('/prof/:id', middleware.isProfLoggedIn, function(req, res){
         } else {
             let allFiles = [];
             let data = await professor.notes.forEach(async (note) => {
-                await gfs.find({filename: note}).toArray((err, files) => {
+                await gfs.files.find({filename: note}).toArray((err, files) => {
                     if(!files || files.length === 0){
                         console.log('no file found');
                         return false

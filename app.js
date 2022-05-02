@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const grid = require('gridfs-stream');
+const Grid = require('gridfs-stream');
 const shortId = require('shortid');
 const {ExpressPeerServer} = require('peer');
 
@@ -20,7 +20,7 @@ const Professor = require('./models/professor');
 const Student = require('./models/student');
 const Chat = require('./models/chat');
 
-const middleware = require('./middleware/index');
+// const middleware = require('./middleware/index');
 // ROUTES IMPORT
 const professorRoutes = require('./routes/professor');
 const studentRoutes = require('./routes/student');
@@ -45,10 +45,9 @@ mongoose.connect(mongoUri, {
 // INITIALIZE GFS
 let gfs;
 conn.once('open', () => {
-    // Initialize stream
-    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-      bucketName: process.env.BUCKET_NAME
-    })
+  // Init Stream
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection('uploads');
 });
 
 app.set("view engine", "ejs");
@@ -210,7 +209,6 @@ app.get('/notes/:filename', (req, res) => {
     }
   })
 });
-
 
 app.use('/', professorRoutes);
 app.use('/', studentRoutes);
