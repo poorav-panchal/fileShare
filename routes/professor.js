@@ -123,6 +123,7 @@ router.get('/prof/:id', middleware.isProfLoggedIn, function(req, res){
             req.flash("error", "An error occurred!");
             res.redirect('back');
         } else {
+            console.log(professor);
             let allFiles = [];
             let data = await professor.notes.forEach(async (note) => {
                 await gfs.find({filename: note}).toArray((err, files) => {
@@ -147,25 +148,21 @@ router.get('/prof/:id', middleware.isProfLoggedIn, function(req, res){
                         res.redirect('back');
                     } else {
                         subscribedStudents.push(stud);
-                        Chat.find({profId: professor._id, studId: stud._id}, function(error, room){
-                            if(error){
-                                console.log(error);
-                                res.redirect('back');
-                            } else {
-                                roomExists.push(stud);
-                            }
-                        })
+                        console.log(subscribedStudents);
+                        // Chat.find({profId: professor._id, studId: stud._id}, function(error, room){
+                        //     if(error){
+                        //         console.log(error);
+                        //         res.redirect('back');
+                        //     } else {
+                        //         roomExists.push(stud);
+                        //     }
+                        // })
                     }
                 })
-            })
-
-            // This array will contain students who have do not have a chatroom with the professor
-            let noRoom = subscribedStudents.filter( function( el ) {
-                return !roomExists.includes( el );
-            } );
+            })            
 
             setTimeout(function(){
-                res.render('prof_profile', {professor: professor, files:allFiles, reqUser: req.user, subbedStudents: subscribedStudents , noRoomStudents: noRoom, roomStudents: roomExists});
+                res.render('prof_profile', {professor: professor, files:allFiles, reqUser: req.user, subbedStudents: subscribedStudents});
             }, 1500);
         }
     })
