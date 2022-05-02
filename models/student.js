@@ -7,7 +7,7 @@ let studentSchema = new mongoose.Schema({
     subscribedTo: {type: [String], default: []},
     course: String,
     faculty: String,
-    University: String,
+    university: String,
     collegeStart: Number,
     collegeEnd: Number
 });

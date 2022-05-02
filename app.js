@@ -46,8 +46,12 @@ mongoose.connect(mongoUri, {
 let gfs;
 conn.once('open', () => {
   // Init Stream
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('uploads');
+  // gfs = Grid(conn.db, mongoose.mongo);
+  // gfs.collection(process.env.BUCKET_NAME);
+
+  gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: process.env.BUCKET_NAME
+  })
 });
 
 app.set("view engine", "ejs");
@@ -204,6 +208,8 @@ app.get('/notes/:filename', (req, res) => {
             || files[0].contentType === 'image/svg+xml'
             || files[0].contentType === 'application/pdf'){
               gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+              // const readstream = gfs.createReadStream({filename: files.filename});
+              // readstream.pipe(res);
     } else {
       res.send("Invalid Filetype");
     }

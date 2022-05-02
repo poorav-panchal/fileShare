@@ -1,8 +1,10 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const {GridFsStorage} = require('multer-gridfs-storage');
 const crypto = require('crypto');
 const multer = require('multer');
 
-const mongoUri = 'mongodb://localhost/fileShare';
+const mongoUri = process.env.ATLAS_URI;
 
 const storage = new GridFsStorage({
     url: mongoUri,
@@ -17,7 +19,7 @@ const storage = new GridFsStorage({
           const filename = `${buf.toString('hex')}_${file.originalname}`;
           const fileInfo = {
             filename: filename,
-            bucketName: 'files'
+            bucketName: process.env.BUCKET_NAME
           };
           resolve(fileInfo);
           // console.log(`fileInfo: ${fileInfo}`)

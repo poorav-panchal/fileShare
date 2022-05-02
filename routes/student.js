@@ -25,9 +25,10 @@ const conn = mongoose.createConnection(mongoUri, {
 // Initialize gfs
 let gfs;
 conn.once('open', () => {
-    // Init Stream
-    gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads');
+    // Initialize stream
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: process.env.BUCKET_NAME
+    })
 });
 
 
@@ -143,7 +144,7 @@ router.get('/allnotes', function(req, res){
                             // console.log(`professor[0].notes: ${professor[0].notes}`);
                             professor[0].notes.forEach(async (note) => {
                                 // console.log(`note: ${note}`);
-                                await gfs.files.find({filename: note}).toArray((err, files) => {
+                                await gfs.find({filename: note}).toArray((err, files) => {
                                     if(!files || files.length == 0){
                                         console.log(`No file found | err: ${err}`);
                                         return false

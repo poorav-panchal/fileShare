@@ -25,19 +25,19 @@ const conn = mongoose.createConnection(mongoUri, {
 });
 // Initialize gfs
 let gfs;
-// conn.once('open', () => {
-//     // Initialize stream
-//     gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-//       bucketName: process.env.BUCKET_NAME
-//     })
-// });
+conn.once('open', () => {
+    // Initialize stream
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: process.env.BUCKET_NAME
+    })
+});
 
 //NEW
-conn.once('open', () => {
-    // Init Stream
-    gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads');
-});
+// conn.once('open', () => {
+//     // Init Stream
+//     gfs = Grid(conn.db, mongoose.mongo);
+//     gfs.collection(process.env.BUCKET_NAME);
+// });
 
 
 
@@ -125,7 +125,7 @@ router.get('/prof/:id', middleware.isProfLoggedIn, function(req, res){
         } else {
             let allFiles = [];
             let data = await professor.notes.forEach(async (note) => {
-                await gfs.files.find({filename: note}).toArray((err, files) => {
+                await gfs.find({filename: note}).toArray((err, files) => {
                     if(!files || files.length === 0){
                         console.log('no file found');
                         return false
@@ -174,7 +174,8 @@ router.get('/prof/:id', middleware.isProfLoggedIn, function(req, res){
 
 // Delete notes
 router.delete('/prof/:prof_id/notes/:id', (req, res) => {
-    gfs.delete(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
+    // gfs.(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
+        gfs.remove({_id: req.params.id, root: 'uploads'}, (err, data) => {
         if(err){
             console.log(err);
             res.send("Error deleting file");
