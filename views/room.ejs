@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fileShare</title>
+    <title>Atten - Call</title>
     <link rel="stylesheet" href="/stylesheets/room.css">
 
     <!-- Bootstrap CSS -->
@@ -23,19 +23,20 @@
         <nav class="navbar navbar-dark" style="background-color: #3f3d56;">
             <div>
                 <span class="navbar-brand mb-0 h1 nav-text">
-                    <a href="/">fileShare</a>
+                    <a href="#">Atten</a>
                 </span>
             </div>
         </nav>
     </header>
 
     <div id="videoDiv"></div>
+    <button class="end-call" onclick="history.back()" title="End call"><i class="bi bi-x"></i></button>
 
     <script>
         const roomID = "<%= roomId %>"
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>

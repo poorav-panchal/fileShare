@@ -9,7 +9,7 @@
     flex-wrap: nowrap;
 }
 .nav-text{
-    padding-left: 8%;
+    margin-left: 5rem;
 }
 .nav-text a{
     font-family: 'Prompt', sans-serif;
