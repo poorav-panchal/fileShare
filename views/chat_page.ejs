@@ -37,7 +37,7 @@
         
         <ul id="messages"></ul>
         <form id="form">
-        <input type="text" autocomplete="off" id="input">
+        <input type="text" autocomplete="off" id="input" autofocus>
         <button type="submit">Send</button>
         </form>
     </main>
@@ -45,7 +45,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        let socket = io();
+        let socket = io('/');
 
         let messages = document.getElementById('messages');
         let form = document.getElementById('form');

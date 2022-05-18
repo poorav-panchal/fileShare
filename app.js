@@ -283,11 +283,11 @@ const io = new Server(server);
 
 // CHAT ROUTES
 app.get('/chat', function(req, res){
-  let room_Id = shortId.generate();
-  res.redirect('/chat/' + room_Id);
+  // let room_Id = shortId.generate();
+  res.redirect('/chat/euHc9pBYM');
 });
 
-app.get('/chat/:roomId', function(req, res){
+app.get('/chat/euHc9pBYM', function(req, res){
   res.render('chat_page');
 });
 
@@ -342,7 +342,7 @@ app.use('/call', peerServer);
 
 
 //tell express to listen for requests
-let port = process.env.PORT || 3000;
-app.listen(port, function () {
-    console.log("FileShare server has started!");
-});
+// let port = process.env.PORT || 3000;
+// app.listen(port, function () {
+//     console.log("FileShare server has started!");
+// });
