@@ -283,11 +283,11 @@ const io = new Server(server);
 
 // CHAT ROUTES
 app.get('/chat', function(req, res){
-  // let room_Id = shortId.generate();
-  res.redirect('/chat/euHc9pBYM');
+  let room_Id = shortId.generate();
+  res.redirect('/chat/' + room_Id);
 });
 
-app.get('/chat/euHc9pBYM', function(req, res){
+app.get('/chat/:roomId', function(req, res){
   res.render('chat_page');
 });
 
@@ -329,8 +329,8 @@ io.on('connection', (socket) => {
     })
 });
 
-const application = server.listen(5000, () => {
-  console.log('listening on *:5000');
+const application = server.listen(process.env.PORT || 5000, () => {
+  console.log('listening');
 })
 
 const peerServer = ExpressPeerServer(application, {
